@@ -14,13 +14,12 @@ const context = await esbuild.context({
   ...(development ? { sourcemap: "linked" } : {}),
   bundle: true,
   entryPoints: [
-    "./popup/index.js",
-    "./src/tailwind.css",
-    "./newtab/index.js",
-    "./background.js",
+    "./src/popup/index.js",
+    "./src/css/tailwind.css",
+    "./src/newtab/index.js",
+    "./src/background/background.js",
   ],
   outdir: "dist",
-  outbase: "./",
   target: ["es2020"],
   loader: { ".js": "jsx" },
   plugins: [
@@ -42,9 +41,9 @@ const context = await esbuild.context({
     copy({
       assets: [
         // `to` paths are relative to `outdir`, `from` paths are relative to `build.js`.
-        { from: ["./popup/index.html"], to: ["popup/index.html"] },
-        { from: ["./newtab/index.html"], to: ["newtab/index.html"] },
-        { from: ["./manifest.json"], to: ["manifest.json"] },
+        { from: ["./src/popup/index.html"], to: ["popup/index.html"] },
+        { from: ["./src/newtab/index.html"], to: ["newtab/index.html"] },
+        { from: ["./src/manifest.json"], to: ["manifest.json"] },
       ],
     }),
   ],
@@ -98,8 +97,6 @@ if (args.watch) {
     } catch (e) {} // ignore in watch mode
   };
 
-  watch_dirs("popup", on_change);
-  watch_dirs("newtab", on_change);
   watch_dirs("src", on_change);
 
   // wait forever until Control-C

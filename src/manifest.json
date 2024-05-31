@@ -10,7 +10,7 @@
     "newtab": "newtab/index.html"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background/background.js"
   },
   "permissions": ["webNavigation", "storage", "tabs"]
 }
