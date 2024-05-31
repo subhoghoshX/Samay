@@ -13,8 +13,14 @@ const development = process.env.NODE_ENV === "development";
 const context = await esbuild.context({
   ...(development ? { sourcemap: "linked" } : {}),
   bundle: true,
-  entryPoints: ["./popup/index.js", "./popup/tailwind.css"],
-  outdir: "dist/popup",
+  entryPoints: [
+    "./popup/index.js",
+    "./src/tailwind.css",
+    "./newtab/index.js",
+    "./background.js",
+  ],
+  outdir: "dist",
+  outbase: "./",
   target: ["es2020"],
   loader: { ".js": "jsx" },
   plugins: [
@@ -36,8 +42,9 @@ const context = await esbuild.context({
     copy({
       assets: [
         // `to` paths are relative to `outdir`, `from` paths are relative to `build.js`.
-        { from: ["./popup/index.html"], to: ["index.html"] },
-        { from: ["./manifest.json"], to: ["../manifest.json"] },
+        { from: ["./popup/index.html"], to: ["popup/index.html"] },
+        { from: ["./newtab/index.html"], to: ["newtab/index.html"] },
+        { from: ["./manifest.json"], to: ["manifest.json"] },
       ],
     }),
   ],
@@ -92,6 +99,8 @@ if (args.watch) {
   };
 
   watch_dirs("popup", on_change);
+  watch_dirs("newtab", on_change);
+  watch_dirs("src", on_change);
 
   // wait forever until Control-C
   await new Promise(() => {});
