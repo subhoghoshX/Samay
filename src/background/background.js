@@ -1,3 +1,5 @@
+import { getDate } from "@/lib/utils";
+
 const browser = chrome;
 
 browser.tabs.onActivated.addListener(handler);
@@ -49,16 +51,7 @@ browser.runtime.onMessage.addListener(async (message) => {
     const localStorage = await browser.storage.local.get();
     browser.runtime.sendMessage({
       type: "get_times_reply",
-      times: localStorage[getDate()],
+      totalUsage: localStorage,
     });
   }
 });
-
-function getDate() {
-  const d = new Date();
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0"); //January is 0!
-  const yyyy = d.getFullYear();
-
-  return `${yyyy}-${mm}-${dd}`;
-}
