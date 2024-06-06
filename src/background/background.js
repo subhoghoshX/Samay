@@ -27,13 +27,16 @@ async function handler(details) {
     const newTimeSpent = Date.now() - lastActiveHost.timeStamp;
     const localStorage = await browser.storage.local.get();
     const prevTimeSpent =
-      localStorage[getDate()]?.[lastActiveHost.hostName] ?? 0;
+      localStorage.totalUsage[getDate()]?.[lastActiveHost.hostName] ?? 0;
 
     await browser.storage.local.set({
       ...localStorage,
-      [getDate()]: {
-        ...localStorage[getDate()],
-        [lastActiveHost.hostName]: prevTimeSpent + newTimeSpent,
+      totalUsage: {
+        ...localStorage.totalUsage,
+        [getDate()]: {
+          ...localStorage.totalUsage[getDate()],
+          [lastActiveHost.hostName]: prevTimeSpent + newTimeSpent,
+        },
       },
     });
     await browser.storage.session.set({
@@ -51,7 +54,40 @@ browser.runtime.onMessage.addListener(async (message) => {
     const localStorage = await browser.storage.local.get();
     browser.runtime.sendMessage({
       type: "get_times_reply",
-      totalUsage: localStorage,
+      totalUsage: localStorage.totalUsage,
     });
+  } else if (message.type === "set_focusmode_details") {
+    const localStorage = await browser.storage.local.get();
+    await browser.storage.local.set({
+      ...localStorage,
+      focusMode: message.focusMode,
+    });
+  } else if (message.type === "get_focusmode_details") {
+    const localStorage = await browser.storage.local.get();
+
+    browser.runtime.sendMessage({
+      type: "get_focusmode_details_reply",
+      focusMode: localStorage.focusMode,
+    });
+  }
+});
+
+browser.webNavigation.onCommitted.addListener(async (details) => {
+  const focusMode = (await browser.storage.local.get()).focusMode;
+  if (!focusMode.isEnabled) return;
+
+  const url = new URL(details.url);
+  const blockedSites = focusMode.blockedSites;
+
+  // Check if the URL matches any of the blocked URLs
+  const isBlocked = blockedSites.some((blockedUrl) => {
+    const pattern = new URL(
+      blockedUrl.startsWith("http") ? blockedUrl : `https://${blockedUrl}`,
+    );
+    return url.hostname === pattern.hostname;
+  });
+
+  if (isBlocked) {
+    browser.tabs.update(details.tabId, { url: "about:blank" });
   }
 });
