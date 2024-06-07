@@ -68,7 +68,7 @@ export default function App() {
       const day = days[new Date(date).getDay()];
       data.push({ name: day, total: minutesSpent });
     }
-    return data;
+    return data.slice(-8);
   }, [totalUsage, selectedHost]);
 
   const [isDark, setIsDark] = React.useState(() => {

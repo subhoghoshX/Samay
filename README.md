@@ -1,4 +1,5 @@
 # Samay
+
 Track your browsing time with this extension and block sites to stay focused when needed.
 
 ![image](https://github.com/subhoghoshX/Samay/assets/108616679/d1d4ae1e-c937-4022-87ff-72a0b6a365fc)
@@ -6,16 +7,19 @@ Track your browsing time with this extension and block sites to stay focused whe
 ## Installation
 
 Clone the repo
+
 ```
 git clone https://github.com/subhoghoshX/Samay.git
 ```
 
 Install dependencies
+
 ```
 cd Samay && npm install
 ```
 
 Build it
+
 ```
 npm run build
 ```
