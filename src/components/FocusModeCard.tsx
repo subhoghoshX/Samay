@@ -33,6 +33,7 @@ export default function FocusModeCard() {
 
   function addSiteToBlockList(e: React.FormEvent) {
     e.preventDefault();
+    if (input.trim() === "") return;
 
     setBlockedSites((blockedSites) => [...blockedSites, input]);
     setInput("");
