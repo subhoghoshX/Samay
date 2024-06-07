@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -89,24 +90,26 @@ export default function FocusModeCard() {
           />
           <Button variant="outline">Add</Button>
         </form>
-        <ul className="mt-5">
-          {blockedSites.map((site, i) => (
-            <li
-              className="flex justify-between hover:bg-zinc-50 dark:hover:bg-zinc-900 px-2 -mx-2 py-1 rounded"
-              key={i}
-            >
-              {site}
-              <Button
-                variant="outline"
-                size="icon"
-                className="size-4"
-                onClick={() => removeSiteFromBlockList(site)}
+        <ScrollArea className="h-[163px] mt-5 -mx-6 px-6">
+          <ul className="">
+            {blockedSites.map((site, i) => (
+              <li
+                className="flex justify-between hover:bg-zinc-50 dark:hover:bg-zinc-900 px-2 -mx-2 py-1 rounded"
+                key={i}
               >
-                <X />
-              </Button>
-            </li>
-          ))}
-        </ul>
+                {site}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-4"
+                  onClick={() => removeSiteFromBlockList(site)}
+                >
+                  <X />
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </ScrollArea>
       </CardContent>
     </Card>
   );
