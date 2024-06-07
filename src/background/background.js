@@ -76,7 +76,9 @@ browser.webNavigation.onCommitted.addListener(async (details) => {
   const focusMode = (await browser.storage.local.get()).focusMode;
   if (!focusMode.isEnabled) return;
 
-  const url = new URL(details.url);
+  // don't use details.url it can also come from iframes
+  const { url: tabUrl } = await browser.tabs.get(details.tabId);
+  const url = new URL(tabUrl);
   const blockedSites = focusMode.blockedSites;
 
   // Check if the URL matches any of the blocked URLs
