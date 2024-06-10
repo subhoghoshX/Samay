@@ -91,8 +91,8 @@ export default function FocusModeCard() {
           />
           <Button variant="outline">Add</Button>
         </form>
-        <ScrollArea className="h-[163px] mt-5 -mx-6 px-6">
-          <ul className="">
+        <ScrollArea className="h-[163px] mt-5 -mx-6">
+          <ul className="px-6">
             {blockedSites.map((site, i) => (
               <li
                 className="flex justify-between hover:bg-zinc-50 dark:hover:bg-zinc-900 px-2 -mx-2 py-1 rounded"
