@@ -71,14 +71,6 @@ export default function App() {
     return data.slice(-8);
   }, [totalUsage, selectedHost]);
 
-  const [isDark, setIsDark] = React.useState(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return true;
-    } else {
-      return false;
-    }
-  });
-
   React.useEffect(() => {
     const browser = chrome;
 
@@ -96,12 +88,22 @@ export default function App() {
     });
 
     // dark mode
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
     window
       .matchMedia("(prefers-color-scheme: dark)")
       .addEventListener("change", themeChangeListener);
     function themeChangeListener(event: MediaQueryListEvent) {
       const isDark = event.matches;
-      setIsDark(isDark);
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     }
 
     return () => {
@@ -113,9 +115,7 @@ export default function App() {
   }, []);
 
   return (
-    <main
-      className={`flex justify-center lg:items-center h-screen overflow-auto py-10 ${isDark ? "dark bg-zinc-950" : ""}`}
-    >
+    <main className="flex justify-center lg:items-center h-screen overflow-auto py-10 dark:bg-zinc-950">
       <section className="flex gap-5 flex-col lg:flex-row h-fit">
         <Card>
           <CardHeader>
