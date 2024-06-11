@@ -69,6 +69,19 @@ browser.runtime.onMessage.addListener(async (message) => {
       type: "get_focusmode_details_reply",
       focusMode: localStorage.focusMode,
     });
+  } else if (message.type === "set_automatic_details") {
+    const localStorage = await browser.storage.local.get();
+    await browser.storage.local.set({
+      ...localStorage,
+      automatic: message.automatic,
+    });
+  } else if (message.type === "get_automatic_details") {
+    const localStorage = await browser.storage.local.get();
+
+    browser.runtime.sendMessage({
+      type: "get_automatic_details_reply",
+      automatic: localStorage.automatic,
+    });
   }
 });
 

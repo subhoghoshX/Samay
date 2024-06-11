@@ -4,7 +4,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { Settings, X } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import TimePicker from "./TimePicker";
 
 const browser = chrome;
 
@@ -12,6 +14,7 @@ export default function FocusModeCard() {
   const [isEnabled, setIsEnabled] = React.useState(false);
   const [blockedSites, setBlockedSites] = React.useState([]);
   const [input, setInput] = React.useState("");
+  const [isAutomatic, setIsAutomatic] = React.useState(false);
 
   React.useEffect(() => {
     browser.runtime.onMessage.addListener(onMessageListener);
@@ -72,14 +75,44 @@ export default function FocusModeCard() {
         blockedSites,
       },
     });
+    setIsAutomatic(false);
   }
 
   return (
     <Card className="lg:w-96 flex flex-col lg:h-1/2 h-80">
       <CardHeader>
-        <CardTitle className="text-lg flex items-center justify-between">
+        <CardTitle className="text-lg flex items-center gap-3">
           Focus mode
-          <Switch checked={isEnabled} onCheckedChange={toggleFocusMode} />
+          <Switch
+            checked={isEnabled}
+            onCheckedChange={toggleFocusMode}
+            className="ml-auto"
+          />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="icon" className="size-7">
+                <Settings className="size-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <CardHeader className="p-2">
+                <CardTitle className="text-lg flex items-center">
+                  Automatic
+                  <Switch
+                    className="ml-auto"
+                    checked={isAutomatic}
+                    onCheckedChange={(bool) => setIsAutomatic(bool)}
+                  />
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-2">
+                <TimePicker
+                  isEnabled={isAutomatic}
+                  setIsEnabled={setIsAutomatic}
+                />
+              </CardContent>
+            </PopoverContent>
+          </Popover>
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-grow">
