@@ -2,6 +2,29 @@ import { getDate } from "@/lib/utils";
 
 const browser = chrome;
 
+// set the initial data structure in localStorage
+// important for avoiding reading properties of undefined
+browser.runtime.onInstalled.addListener(async () => {
+  const localStorage = await browser.storage.local.get();
+  const { totalUsage, focusMode, automatic } = localStorage;
+  await browser.storage.local.clear();
+  await browser.storage.local.set({
+    ...(totalUsage ? { totalUsage } : { totalUsage: {} }),
+    ...(focusMode
+      ? { focusMode }
+      : { focusMode: { isEnabled: false, blockedSites: [] } }),
+    ...(automatic
+      ? { automatic }
+      : {
+          automatic: {
+            isEnabled: false,
+            startTime: [undefined, undefined],
+            endTime: [undefined, undefined],
+          },
+        }),
+  });
+});
+
 browser.tabs.onActivated.addListener(handler);
 browser.webNavigation.onCommitted.addListener(handler);
 browser.windows.onFocusChanged.addListener(handler);
