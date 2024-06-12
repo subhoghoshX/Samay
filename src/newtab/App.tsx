@@ -113,8 +113,8 @@ export default function App() {
             <CardTitle className="text-lg">Websites visited</CardTitle>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[600px] -mx-6 px-6">
-              <ul className="space-y-1">
+            <ScrollArea className="h-[600px] -mx-6">
+              <ul className="space-y-1 px-6">
                 {Object.keys(todayUsage)
                   .sort((hostnamea, hostnameb) => {
                     if (todayUsage[hostnamea] > todayUsage[hostnameb])
@@ -126,10 +126,14 @@ export default function App() {
                     const timeSpent = todayUsage[hostName];
                     const [hour, minute, second] = millisecToHMS(timeSpent);
                     return (
-                      <li key={hostName} className="flex items-center gap-x-8">
+                      <li
+                        key={hostName}
+                        className="flex items-center gap-x-8 px-2 py-1 -mx-2 hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded"
+                        onClick={() => setSelectedHost(hostName)}
+                      >
                         <div className="w-44 flex items-center gap-3">
                           <img
-                            className="size-3 rounded"
+                            className="size-3.5 rounded"
                             src={"https://favicone.com/" + hostName}
                             alt=""
                           />
@@ -142,7 +146,6 @@ export default function App() {
                         <Progress
                           value={(timeSpent / totalTime) * 100}
                           className="w-32 h-1.5"
-                          onClick={() => setSelectedHost(hostName)}
                         />
                       </li>
                     );
