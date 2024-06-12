@@ -1,3 +1,4 @@
+import { millisecToHMS } from "@/lib/utils";
 import * as React from "react";
 import {
   Bar,
@@ -29,7 +30,23 @@ export function Overview({ data }) {
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(value) => `${value}m`}
+          tickFormatter={(value) => {
+            const [hour, minute, second] = millisecToHMS(value * 60 * 1000);
+            let label = "";
+            if (hour) {
+              label += hour + "h";
+            }
+            if (minute) {
+              label += " " + minute + "m";
+            }
+            if (hour === 0 && minute === 0 && second) {
+              label += second + "s";
+            }
+            if (hour === 0 && minute === 0 && second === 0) {
+              label += minute;
+            }
+            return label;
+          }}
         />
         <Bar
           dataKey="total"

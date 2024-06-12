@@ -13,3 +13,12 @@ export function getDate() {
 
   return `${yyyy}-${mm}-${dd}`;
 }
+
+export function millisecToHMS(millisec) {
+  const d = new Date(millisec);
+  return d
+    .toISOString()
+    .slice(11, 19)
+    .split(":")
+    .map((item) => Number(item));
+}

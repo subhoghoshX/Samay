@@ -8,18 +8,9 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Overview } from "@/components/Overview";
-import { getDate } from "@/lib/utils";
+import { getDate, millisecToHMS } from "@/lib/utils";
 import FocusModeCard from "@/components/FocusModeCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-function millisecToHMS(millisec) {
-  const d = new Date(millisec);
-  return d
-    .toISOString()
-    .slice(11, 19)
-    .split(":")
-    .map((item) => Number(item));
-}
 
 export default function App() {
   const [totalUsage, setTotalUsage] = React.useState({});
