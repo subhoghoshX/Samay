@@ -2,9 +2,11 @@ import { getDate } from "@/lib/utils";
 
 const browser = chrome;
 
-// set the initial data structure in localStorage
-// important for avoiding reading properties of undefined
-browser.runtime.onInstalled.addListener(async () => {
+browser.runtime.onInstalled.addListener(fillLocalStorage);
+
+async function fillLocalStorage() {
+  // set the initial data structure in localStorage
+  // important for avoiding reading properties of undefined
   const localStorage = await browser.storage.local.get();
   const { totalUsage, focusMode, automatic } = localStorage;
   await browser.storage.local.clear();
@@ -23,13 +25,19 @@ browser.runtime.onInstalled.addListener(async () => {
           },
         }),
   });
-});
+}
 
 browser.tabs.onActivated.addListener(handler);
 browser.webNavigation.onCommitted.addListener(handler);
 browser.windows.onFocusChanged.addListener(handler);
 
 async function handler(details) {
+  const localStorage = await browser.storage.local.get();
+  const { totalUsage, focusMode, automatic } = localStorage;
+  if (!totalUsage || !focusMode || !automatic) {
+    await fillLocalStorage();
+  }
+
   let tab;
   // this means the window changed
   if (typeof details === "number") {
