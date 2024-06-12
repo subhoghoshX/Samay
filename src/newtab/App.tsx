@@ -127,7 +127,14 @@ export default function App() {
                     const [hour, minute, second] = millisecToHMS(timeSpent);
                     return (
                       <li key={hostName} className="flex items-center gap-x-8">
-                        <span className="w-44">{hostName}</span>{" "}
+                        <div className="w-44 flex items-center gap-3">
+                          <img
+                            className="size-3 rounded"
+                            src={"https://favicone.com/" + hostName}
+                            alt=""
+                          />
+                          {hostName}
+                        </div>
                         <span className="w-20 text-right tabular-nums">
                           {hour ? hour + "h" : ""} {minute ? minute + "m" : ""}{" "}
                           {second ? second + "s" : ""}
