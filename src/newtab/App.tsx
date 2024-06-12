@@ -20,9 +20,6 @@ export default function App() {
     [totalUsage],
   );
   const totalTime = React.useMemo(() => {
-    // delete time spent in `newtab` data
-    delete todayUsage["newtab"];
-
     // set total time
     let totalTime = 0;
     for (const hostName in todayUsage) {
@@ -69,6 +66,16 @@ export default function App() {
     async function onMessageListener(message) {
       if (message.type === "get_times_reply") {
         const { totalUsage } = message;
+
+        // delete special tabs like `newtab`, `settings`, `devtools`, `extensions`
+        for (const date in totalUsage) {
+          const usage = totalUsage[date];
+          for (const hostName in usage) {
+            if (hostName.split(".").length === 1) {
+              delete usage[hostName];
+            }
+          }
+        }
 
         setTotalUsage(totalUsage);
       }
