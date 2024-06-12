@@ -7,6 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Settings, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import TimePicker from "./TimePicker";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 const browser = chrome;
 
@@ -82,7 +87,13 @@ export default function FocusModeCard() {
     <Card className="lg:w-96 flex flex-col lg:h-1/2 h-80">
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-3">
-          Focus mode
+          <HoverCard>
+            <HoverCardTrigger>Focus mode</HoverCardTrigger>
+            <HoverCardContent className="text-sm">
+              When you need time to focus, enable focus mode to block
+              distracting sites from opening.
+            </HoverCardContent>
+          </HoverCard>
           <Switch
             checked={isEnabled}
             onCheckedChange={toggleFocusMode}
