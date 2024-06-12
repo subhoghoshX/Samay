@@ -33,6 +33,9 @@ async function handler(details) {
   let tab;
   // this means the window changed
   if (typeof details === "number") {
+    // focused on a devtools window
+    if (details < 0) return;
+
     const tabs = await chrome.tabs.query({ currentWindow: true, active: true });
     tab = tabs[0];
   } else {
