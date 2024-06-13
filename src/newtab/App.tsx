@@ -49,14 +49,16 @@ export default function App() {
 
     const days = ["Sun", "Mon", "Tue", "Wed", "Thi", "Fri", "Sat"];
     const data = [];
-    for (const date in totalUsage) {
-      const usage = totalUsage[date];
-      const timeSpent = usage[selectedHost];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const thatDayUsage = totalUsage[getDate(d)];
+      const timeSpent = thatDayUsage?.[selectedHost] ?? 0;
       const minutesSpent = timeSpent / (1000 * 60);
-      const day = days[new Date(date).getDay()];
-      data.push({ name: day, total: minutesSpent });
+      const weekDay = days[d.getDay()];
+      data.unshift({ name: weekDay, total: minutesSpent });
     }
-    return data.slice(-8);
+    return data;
   }, [totalUsage, selectedHost]);
 
   React.useEffect(() => {
