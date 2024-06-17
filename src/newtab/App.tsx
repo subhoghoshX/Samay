@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -13,14 +14,12 @@ import FocusModeCard from "@/components/FocusModeCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function App() {
-  const [totalUsage, setTotalUsage] = React.useState({});
+  const [totalUsage, setTotalUsage] = useState({});
 
-  const todayUsage = React.useMemo(
-    () => totalUsage[getDate()] ?? {},
-    [totalUsage],
-  );
-  const totalTime = React.useMemo(() => {
-    // set total time
+  const todayUsage = useMemo(() => totalUsage[getDate()] ?? {}, [totalUsage]);
+
+  // required for calculating progress bar percentage
+  const totalTime = useMemo(() => {
     let totalTime = 0;
     for (const hostName in todayUsage) {
       totalTime += todayUsage[hostName];
@@ -28,10 +27,10 @@ export default function App() {
     return totalTime;
   }, [todayUsage]);
 
-  const [selectedHost, setSelectedHost] = React.useState(null);
+  const [selectedHost, setSelectedHost] = useState(null);
 
-  React.useEffect(() => {
-    // by default it's the most used website
+  useEffect(() => {
+    // set selectedHost: by default it's the most used website
     const mostUsedSite = Object.keys(todayUsage).sort(
       (hostnamea, hostnameb) => {
         if (todayUsage[hostnamea] > todayUsage[hostnameb]) return -1;
@@ -42,7 +41,7 @@ export default function App() {
     setSelectedHost(mostUsedSite);
   }, [todayUsage]);
 
-  const graphData = React.useMemo(() => {
+  const graphData = useMemo(() => {
     if (!selectedHost) {
       return null;
     }
@@ -61,7 +60,7 @@ export default function App() {
     return data;
   }, [totalUsage, selectedHost]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const browser = chrome;
 
     browser.runtime.onMessage.addListener(onMessageListener);

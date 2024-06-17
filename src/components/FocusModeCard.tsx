@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
@@ -16,12 +17,12 @@ import {
 const browser = chrome;
 
 export default function FocusModeCard() {
-  const [isEnabled, setIsEnabled] = React.useState(false);
-  const [blockedSites, setBlockedSites] = React.useState([]);
-  const [input, setInput] = React.useState("");
-  const [isAutomatic, setIsAutomatic] = React.useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [blockedSites, setBlockedSites] = useState([]);
+  const [input, setInput] = useState("");
+  const [isAutomatic, setIsAutomatic] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     browser.runtime.onMessage.addListener(onMessageListener);
     function onMessageListener(message) {
       if (message.type === "get_focusmode_details_reply") {

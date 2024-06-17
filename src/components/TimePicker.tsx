@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 
 import {
   Select,
@@ -17,10 +18,10 @@ interface Props {
 }
 
 export default function TimePicker({ isEnabled, setIsEnabled }: Props) {
-  const [startTime, setStartTime] = React.useState([undefined, undefined]);
-  const [endTime, setEndTime] = React.useState([undefined, undefined]);
+  const [startTime, setStartTime] = useState([undefined, undefined]);
+  const [endTime, setEndTime] = useState([undefined, undefined]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     browser.runtime.onMessage.addListener(onMessageListener);
     function onMessageListener(message) {
       if (message.type === "get_automatic_details_reply") {
@@ -41,7 +42,7 @@ export default function TimePicker({ isEnabled, setIsEnabled }: Props) {
   }, [setIsEnabled]);
 
   // sync startTime and endTime with localStorage
-  React.useEffect(() => {
+  useEffect(() => {
     browser.runtime.sendMessage({
       type: "set_automatic_details",
       automatic: {
