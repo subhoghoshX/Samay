@@ -137,6 +137,8 @@ browser.webNavigation.onCommitted.addListener(async (details) => {
   });
 
   if (isBlocked) {
-    browser.tabs.update(details.tabId, { url: "about:blank" });
+    browser.tabs.update(details.tabId, {
+      url: `redirect/index.html?from=${tabUrl}`,
+    });
   }
 });

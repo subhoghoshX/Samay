@@ -17,6 +17,7 @@ const context = await esbuild.context({
     "./src/popup/index.js",
     "./src/css/tailwind.css",
     "./src/newtab/index.js",
+    "./src/redirect/index.js",
     "./src/background/background.js",
   ],
   outdir: "dist",
@@ -43,6 +44,7 @@ const context = await esbuild.context({
         // `to` paths are relative to `outdir`, `from` paths are relative to `build.js`.
         { from: ["./src/popup/index.html"], to: ["popup/index.html"] },
         { from: ["./src/newtab/index.html"], to: ["newtab/index.html"] },
+        { from: ["./src/redirect/index.html"], to: ["redirect/index.html"] },
         { from: ["./src/manifest.json"], to: ["manifest.json"] },
       ],
     }),
