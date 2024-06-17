@@ -68,11 +68,16 @@ export default function App() {
       if (message.type === "get_times_reply") {
         const { totalUsage } = message;
 
-        // delete special tabs like `newtab`, `settings`, `devtools`, `extensions`
         for (const date in totalUsage) {
           const usage = totalUsage[date];
           for (const hostName in usage) {
+            // delete special tabs like `newtab`, `settings`, `devtools`, `extensions`
             if (hostName.split(".").length === 1) {
+              delete usage[hostName];
+            }
+
+            // don't show usage if it's less than 1000ms
+            if (usage[hostName] < 1000) {
               delete usage[hostName];
             }
           }
