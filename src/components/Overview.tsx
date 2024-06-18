@@ -1,60 +1,49 @@
-import { millisecToHMS } from "@/lib/utils";
 import * as React from "react";
+import { useMemo } from "react";
+import Chart from "@/components/Chart";
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from "recharts";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { getDate } from "@/lib/utils";
 
-export function Overview({ data }) {
+interface Props {
+  totalUsage: Record<string, Record<string, number>>;
+  selectedHost: string;
+}
+
+export default function Overview({ totalUsage, selectedHost }: Props) {
+  const chartData = useMemo(() => {
+    if (!selectedHost) {
+      return null;
+    }
+
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thi", "Fri", "Sat"];
+    const data = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const thatDayUsage = totalUsage[getDate(d)];
+      const timeSpent = thatDayUsage?.[selectedHost] ?? 0;
+      const minutesSpent = timeSpent / (1000 * 60);
+      const weekDay = days[d.getDay()];
+      data.unshift({ name: weekDay, total: minutesSpent });
+    }
+    return data;
+  }, [totalUsage, selectedHost]);
+
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart data={data}>
-        <CartesianGrid
-          vertical={false}
-          strokeDasharray="3 1"
-          className="dark:stroke-zinc-600"
-        />
-        <XAxis
-          dataKey="name"
-          stroke="#888888"
-          fontSize={12}
-          tickLine={false}
-          axisLine={false}
-        />
-        <YAxis
-          stroke="#888888"
-          fontSize={12}
-          tickLine={false}
-          axisLine={false}
-          tickFormatter={(value) => {
-            const [hour, minute, second] = millisecToHMS(value * 60 * 1000);
-            let label = "";
-            if (hour) {
-              label += hour + "h";
-            }
-            if (minute) {
-              label += " " + minute + "m";
-            }
-            if (hour === 0 && minute === 0 && second) {
-              label += second + "s";
-            }
-            if (hour === 0 && minute === 0 && second === 0) {
-              label += minute;
-            }
-            return label;
-          }}
-        />
-        <Bar
-          dataKey="total"
-          fill="currentColor"
-          radius={[4, 4, 0, 0]}
-          className="fill-primary"
-        />
-      </BarChart>
-    </ResponsiveContainer>
+    <Card className="lg:w-96 flex flex-col lg:h-1/2 h-80">
+      <CardHeader>
+        <CardTitle className="text-lg">Last 7 days</CardTitle>
+        <CardDescription>{selectedHost}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex-grow">
+        <Chart data={chartData} />
+      </CardContent>
+    </Card>
   );
 }

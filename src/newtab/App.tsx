@@ -1,16 +1,10 @@
 import * as React from "react";
 import { useState, useEffect, useMemo } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Overview } from "@/components/Overview";
+import Overview from "@/components/Overview";
 import { getDate, millisecToHMS } from "@/lib/utils";
-import FocusModeCard from "@/components/FocusModeCard";
+import FocusMode from "@/components/FocusMode";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function App() {
@@ -40,25 +34,6 @@ export default function App() {
     )[0];
     setSelectedHost(mostUsedSite);
   }, [todayUsage]);
-
-  const graphData = useMemo(() => {
-    if (!selectedHost) {
-      return null;
-    }
-
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thi", "Fri", "Sat"];
-    const data = [];
-    for (let i = 0; i < 7; i++) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const thatDayUsage = totalUsage[getDate(d)];
-      const timeSpent = thatDayUsage?.[selectedHost] ?? 0;
-      const minutesSpent = timeSpent / (1000 * 60);
-      const weekDay = days[d.getDay()];
-      data.unshift({ name: weekDay, total: minutesSpent });
-    }
-    return data;
-  }, [totalUsage, selectedHost]);
 
   useEffect(() => {
     const browser = chrome;
@@ -168,16 +143,8 @@ export default function App() {
           </CardContent>
         </Card>
         <div className="flex flex-col gap-5">
-          <Card className="lg:w-96 flex flex-col lg:h-1/2 h-80">
-            <CardHeader>
-              <CardTitle className="text-lg">Last 7 days</CardTitle>
-              <CardDescription>{selectedHost}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <Overview data={graphData} />
-            </CardContent>
-          </Card>
-          <FocusModeCard />
+          <Overview totalUsage={totalUsage} selectedHost={selectedHost} />
+          <FocusMode />
         </div>
       </section>
     </main>
