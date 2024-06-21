@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
@@ -13,28 +13,15 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { useAutomaticMode, useFocusMode } from "@/lib/utils";
 
 const browser = chrome;
 
 export default function FocusModeCard() {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [blockedSites, setBlockedSites] = useState([]);
+  const { isEnabled, blockedSites } = useFocusMode();
+  const { isEnabled: isAutomatic, startTime, endTime } = useAutomaticMode();
   const [input, setInput] = useState("");
-  const [isAutomatic, setIsAutomatic] = useState(false);
 
-  useEffect(() => {
-    async function getFocusMode() {
-      const { focusMode } = await browser.storage.local.get("focusMode");
-      setIsEnabled(focusMode.isEnabled);
-      setBlockedSites(focusMode.blockedSites);
-    }
-
-    getFocusMode();
-  }, []);
-
-  // TODO: For the following functions maintain only one state i.e. the localStorage
-  // and remove the state from the component. Instead have a read only state.
-  // methods change localStorage -> that triggers change in read only state -> component rerenders
   function addSiteToBlockList(e: React.FormEvent) {
     e.preventDefault();
     if (input.trim() === "") return;
@@ -46,7 +33,6 @@ export default function FocusModeCard() {
       },
     });
 
-    setBlockedSites((blockedSites) => [...blockedSites, input]);
     setInput("");
   }
 
@@ -56,7 +42,7 @@ export default function FocusModeCard() {
     if (index > -1) {
       copy.splice(index, 1);
     }
-    setBlockedSites(copy);
+
     browser.storage.local.set({
       focusMode: {
         isEnabled,
@@ -66,14 +52,12 @@ export default function FocusModeCard() {
   }
 
   function toggleFocusMode(isChecked: boolean) {
-    setIsEnabled(isChecked);
     browser.storage.local.set({
       focusMode: {
         isEnabled: isChecked,
         blockedSites,
       },
     });
-    setIsAutomatic(false);
   }
 
   return (
@@ -105,14 +89,23 @@ export default function FocusModeCard() {
                   <Switch
                     className="ml-auto"
                     checked={isAutomatic}
-                    onCheckedChange={(bool) => setIsAutomatic(bool)}
+                    onCheckedChange={(bool) => {
+                      browser.storage.local.set({
+                        automatic: {
+                          isEnabled: bool,
+                          startTime,
+                          endTime,
+                        },
+                      });
+                    }}
                   />
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-2">
                 <TimePicker
                   isEnabled={isAutomatic}
-                  setIsEnabled={setIsAutomatic}
+                  startTime={startTime}
+                  endTime={endTime}
                 />
               </CardContent>
             </PopoverContent>

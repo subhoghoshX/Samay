@@ -1,6 +1,4 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-
 import {
   Select,
   SelectContent,
@@ -14,37 +12,11 @@ const browser = chrome;
 
 interface Props {
   isEnabled: boolean;
-  setIsEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  startTime: [string | undefined, string | undefined];
+  endTime: [string | undefined, string | undefined];
 }
 
-export default function TimePicker({ isEnabled, setIsEnabled }: Props) {
-  const [startTime, setStartTime] = useState([undefined, undefined]);
-  const [endTime, setEndTime] = useState([undefined, undefined]);
-
-  useEffect(() => {
-    async function getAutomaticDetails() {
-      const { automatic } = await browser.storage.local.get("automatic");
-
-      const { isEnabled, startTime, endTime } = automatic;
-      setIsEnabled(isEnabled);
-      setStartTime([startTime[0] ?? undefined, startTime[1] ?? undefined]);
-      setEndTime([endTime[0] ?? undefined, endTime[1] ?? undefined]);
-    }
-
-    getAutomaticDetails();
-  }, [setIsEnabled]);
-
-  // sync startTime and endTime with localStorage
-  useEffect(() => {
-    browser.storage.local.set({
-      automatic: {
-        isEnabled: isEnabled,
-        startTime,
-        endTime,
-      },
-    });
-  }, [isEnabled, startTime, endTime]);
-
+export default function TimePicker({ isEnabled, startTime, endTime }: Props) {
   return (
     <>
       <div className="flex gap-2 items-center">
@@ -52,7 +24,15 @@ export default function TimePicker({ isEnabled, setIsEnabled }: Props) {
         <Select
           disabled={!isEnabled}
           value={startTime[0]}
-          onValueChange={(val) => setStartTime((prev) => [val, prev[1]])}
+          onValueChange={(val) => {
+            browser.storage.local.set({
+              automatic: {
+                isEnabled,
+                startTime: [val, startTime[1]],
+                endTime,
+              },
+            });
+          }}
         >
           <SelectTrigger className="w-[88px]">
             <SelectValue placeholder="Hours" />
@@ -70,7 +50,15 @@ export default function TimePicker({ isEnabled, setIsEnabled }: Props) {
         <Select
           disabled={!isEnabled}
           value={startTime[1]}
-          onValueChange={(val) => setStartTime((prev) => [prev[0], val])}
+          onValueChange={(val) => {
+            browser.storage.local.set({
+              automatic: {
+                isEnabled,
+                startTime: [startTime[0], val],
+                endTime,
+              },
+            });
+          }}
         >
           <SelectTrigger className="w-24">
             <SelectValue placeholder="Minutes" />
@@ -91,7 +79,15 @@ export default function TimePicker({ isEnabled, setIsEnabled }: Props) {
         <Select
           disabled={!isEnabled}
           value={endTime[0]}
-          onValueChange={(val) => setEndTime((prev) => [val, prev[1]])}
+          onValueChange={(val) => {
+            browser.storage.local.set({
+              automatic: {
+                isEnabled,
+                startTime,
+                endTime: [val, endTime[1]],
+              },
+            });
+          }}
         >
           <SelectTrigger className="w-[88px]">
             <SelectValue placeholder="Hours" />
@@ -109,7 +105,15 @@ export default function TimePicker({ isEnabled, setIsEnabled }: Props) {
         <Select
           disabled={!isEnabled}
           value={endTime[1]}
-          onValueChange={(val) => setEndTime((prev) => [prev[0], val])}
+          onValueChange={(val) => {
+            browser.storage.local.set({
+              automatic: {
+                isEnabled,
+                startTime,
+                endTime: [endTime[0], val],
+              },
+            });
+          }}
         >
           <SelectTrigger className="w-24">
             <SelectValue placeholder="Minutes" />

@@ -77,3 +77,80 @@ export function useTotalUsage() {
 
   return totalUsage;
 }
+
+export function useFocusMode() {
+  const [focusMode, setFocusMode] = useState({
+    isEnabled: false,
+    blockedSites: [],
+  });
+
+  useEffect(() => {
+    const browser = chrome;
+
+    async function getFocusMode() {
+      const { focusMode } = await browser.storage.local.get("focusMode");
+      setFocusMode(focusMode);
+    }
+    getFocusMode();
+
+    browser.storage.onChanged.addListener(onChangeHandler);
+    function onChangeHandler(changes) {
+      if (changes.focusMode) {
+        setFocusMode(changes.focusMode.newValue);
+      }
+    }
+
+    return () => {
+      browser.storage.onChanged.removeListener(onChangeHandler);
+    };
+  }, []);
+
+  return focusMode;
+}
+
+export function useAutomaticMode() {
+  interface State {
+    isEnabled: boolean;
+    startTime: [string | undefined, string | undefined];
+    endTime: [string | undefined, string | undefined];
+  }
+  const [automaticMode, setAutomaticMode] = useState<State>({
+    isEnabled: false,
+    startTime: [undefined, undefined],
+    endTime: [undefined, undefined],
+  });
+
+  useEffect(() => {
+    const browser = chrome;
+
+    async function getAutomaticDetails() {
+      const { automatic } = await browser.storage.local.get("automatic");
+
+      const { isEnabled, startTime, endTime } = automatic;
+      setAutomaticMode({
+        isEnabled,
+        startTime: [startTime[0] ?? undefined, startTime[1] ?? undefined],
+        endTime: [endTime[0] ?? undefined, endTime[1] ?? undefined],
+      });
+    }
+    getAutomaticDetails();
+
+    browser.storage.onChanged.addListener(onChangeHandler);
+    function onChangeHandler(changes) {
+      if (changes.automatic) {
+        const { isEnabled, startTime, endTime } = changes.automatic.newValue;
+        setAutomaticMode({
+          isEnabled,
+          startTime: [startTime[0] ?? undefined, startTime[1] ?? undefined],
+          endTime: [endTime[0] ?? undefined, endTime[1] ?? undefined],
+        });
+      }
+    }
+
+    return () => {
+      browser.storage.onChanged.removeListener(onChangeHandler);
+    };
+  }, []);
+
+  return automaticMode;
+}
