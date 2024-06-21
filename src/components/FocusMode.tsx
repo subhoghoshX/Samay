@@ -23,37 +23,31 @@ export default function FocusModeCard() {
   const [isAutomatic, setIsAutomatic] = useState(false);
 
   useEffect(() => {
-    browser.runtime.onMessage.addListener(onMessageListener);
-    function onMessageListener(message) {
-      if (message.type === "get_focusmode_details_reply") {
-        setIsEnabled(message.focusMode.isEnabled);
-        setBlockedSites(message.focusMode.blockedSites);
-      }
+    async function getFocusMode() {
+      const { focusMode } = await browser.storage.local.get("focusMode");
+      setIsEnabled(focusMode.isEnabled);
+      setBlockedSites(focusMode.blockedSites);
     }
 
-    browser.runtime.sendMessage({
-      type: "get_focusmode_details",
-    });
-
-    return () => {
-      browser.runtime.onMessage.removeListener(onMessageListener);
-    };
+    getFocusMode();
   }, []);
 
+  // TODO: For the following functions maintain only one state i.e. the localStorage
+  // and remove the state from the component. Instead have a read only state.
+  // methods change localStorage -> that triggers change in read only state -> component rerenders
   function addSiteToBlockList(e: React.FormEvent) {
     e.preventDefault();
     if (input.trim() === "") return;
 
-    setBlockedSites((blockedSites) => [...blockedSites, input]);
-    setInput("");
-
-    browser.runtime.sendMessage({
-      type: "set_focusmode_details",
+    browser.storage.local.set({
       focusMode: {
         isEnabled,
         blockedSites: [...blockedSites, input],
       },
     });
+
+    setBlockedSites((blockedSites) => [...blockedSites, input]);
+    setInput("");
   }
 
   function removeSiteFromBlockList(domain: string) {
@@ -63,8 +57,7 @@ export default function FocusModeCard() {
       copy.splice(index, 1);
     }
     setBlockedSites(copy);
-    browser.runtime.sendMessage({
-      type: "set_focusmode_details",
+    browser.storage.local.set({
       focusMode: {
         isEnabled,
         blockedSites: copy,
@@ -74,8 +67,7 @@ export default function FocusModeCard() {
 
   function toggleFocusMode(isChecked: boolean) {
     setIsEnabled(isChecked);
-    browser.runtime.sendMessage({
-      type: "set_focusmode_details",
+    browser.storage.local.set({
       focusMode: {
         isEnabled: isChecked,
         blockedSites,

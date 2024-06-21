@@ -51,37 +51,28 @@ export function useTotalUsage() {
   useEffect(() => {
     const browser = chrome;
 
-    browser.runtime.onMessage.addListener(onMessageListener);
-    async function onMessageListener(message) {
-      if (message.type === "get_times_reply") {
-        const { totalUsage } = message;
+    async function getTotalUsage() {
+      const { totalUsage } = await browser.storage.local.get("totalUsage");
 
-        for (const date in totalUsage) {
-          const usage = totalUsage[date];
-          for (const hostName in usage) {
-            // delete special tabs like `newtab`, `settings`, `devtools`, `extensions`
-            if (hostName.split(".").length === 1) {
-              delete usage[hostName];
-            }
+      for (const date in totalUsage) {
+        const usage = totalUsage[date];
+        for (const hostName in usage) {
+          // delete special tabs like `newtab`, `settings`, `devtools`, `extensions`
+          if (hostName.split(".").length === 1) {
+            delete usage[hostName];
+          }
 
-            // don't show usage if it's less than 1000ms
-            if (usage[hostName] < 1000) {
-              delete usage[hostName];
-            }
+          // don't show usage if it's less than 1000ms
+          if (usage[hostName] < 1000) {
+            delete usage[hostName];
           }
         }
-
-        setTotalUsage(totalUsage);
       }
+
+      setTotalUsage(totalUsage);
     }
 
-    browser.runtime.sendMessage({
-      type: "get_times",
-    });
-
-    return () => {
-      browser.runtime.onMessage.removeListener(onMessageListener);
-    };
+    getTotalUsage();
   }, []);
 
   return totalUsage;

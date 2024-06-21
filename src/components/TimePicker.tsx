@@ -22,29 +22,21 @@ export default function TimePicker({ isEnabled, setIsEnabled }: Props) {
   const [endTime, setEndTime] = useState([undefined, undefined]);
 
   useEffect(() => {
-    browser.runtime.onMessage.addListener(onMessageListener);
-    function onMessageListener(message) {
-      if (message.type === "get_automatic_details_reply") {
-        const { isEnabled, startTime, endTime } = message.automatic;
-        setIsEnabled(isEnabled);
-        setStartTime([startTime[0] ?? undefined, startTime[1] ?? undefined]);
-        setEndTime([endTime[0] ?? undefined, endTime[1] ?? undefined]);
-      }
+    async function getAutomaticDetails() {
+      const { automatic } = await browser.storage.local.get("automatic");
+
+      const { isEnabled, startTime, endTime } = automatic;
+      setIsEnabled(isEnabled);
+      setStartTime([startTime[0] ?? undefined, startTime[1] ?? undefined]);
+      setEndTime([endTime[0] ?? undefined, endTime[1] ?? undefined]);
     }
 
-    browser.runtime.sendMessage({
-      type: "get_automatic_details",
-    });
-
-    return () => {
-      browser.runtime.onMessage.removeListener(onMessageListener);
-    };
+    getAutomaticDetails();
   }, [setIsEnabled]);
 
   // sync startTime and endTime with localStorage
   useEffect(() => {
-    browser.runtime.sendMessage({
-      type: "set_automatic_details",
+    browser.storage.local.set({
       automatic: {
         isEnabled: isEnabled,
         startTime,
