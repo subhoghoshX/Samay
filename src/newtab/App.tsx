@@ -3,12 +3,26 @@ import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Overview from "@/components/Overview";
-import { getDate, millisecToHMS } from "@/lib/utils";
+import {
+  getDate,
+  millisecToHMS,
+  useSystemDarkStatus,
+  useTotalUsage,
+} from "@/lib/utils";
 import FocusMode from "@/components/FocusMode";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function App() {
-  const [totalUsage, setTotalUsage] = useState({});
+  const isDark = useSystemDarkStatus();
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
+
+  const totalUsage = useTotalUsage();
 
   const todayUsage = useMemo(() => totalUsage[getDate()] ?? {}, [totalUsage]);
 
@@ -34,64 +48,6 @@ export default function App() {
     )[0];
     setSelectedHost(mostUsedSite);
   }, [todayUsage]);
-
-  useEffect(() => {
-    const browser = chrome;
-
-    browser.runtime.onMessage.addListener(onMessageListener);
-    async function onMessageListener(message) {
-      if (message.type === "get_times_reply") {
-        const { totalUsage } = message;
-
-        for (const date in totalUsage) {
-          const usage = totalUsage[date];
-          for (const hostName in usage) {
-            // delete special tabs like `newtab`, `settings`, `devtools`, `extensions`
-            if (hostName.split(".").length === 1) {
-              delete usage[hostName];
-            }
-
-            // don't show usage if it's less than 1000ms
-            if (usage[hostName] < 1000) {
-              delete usage[hostName];
-            }
-          }
-        }
-
-        setTotalUsage(totalUsage);
-      }
-    }
-
-    browser.runtime.sendMessage({
-      type: "get_times",
-    });
-
-    // dark mode
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", themeChangeListener);
-    function themeChangeListener(event: MediaQueryListEvent) {
-      const isDark = event.matches;
-      if (isDark) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    }
-
-    return () => {
-      browser.runtime.onMessage.removeListener(onMessageListener);
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .removeEventListener("change", themeChangeListener);
-    };
-  }, []);
 
   return (
     <main className="flex justify-center lg:items-center h-screen overflow-auto py-10 dark:bg-zinc-950">
