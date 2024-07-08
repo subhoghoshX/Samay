@@ -22,6 +22,7 @@ async function fillLocalStorage() {
             isEnabled: false,
             startTime: [undefined, undefined],
             endTime: [undefined, undefined],
+            days: ["Mon", "Tue", "Wed", "Thu", "Fri"],
           },
         }),
   });
@@ -104,5 +105,71 @@ browser.webNavigation.onCommitted.addListener(async (details) => {
     browser.tabs.update(details.tabId, {
       url: `redirect/index.html?from=${tabUrl}`,
     });
+  }
+});
+
+browser.alarms.create("updateFocusMode", { periodInMinutes: 5 });
+
+browser.alarms.onAlarm.addListener(async (alarmInfo) => {
+  if (alarmInfo.name !== "updateFocusMode") return;
+
+  const { automatic } = await browser.storage.local.get("automatic");
+  const { isEnabled, startTime, endTime, days } = automatic;
+
+  if (!isEnabled) return;
+  if ([startTime[0], startTime[1], endTime[0], endTime[1]].includes(null))
+    return;
+
+  const d = new Date();
+  const dayName = d.toLocaleString("en-US", { weekday: "short" });
+
+  if (!days.includes(dayName)) return;
+
+  d.setHours(automatic.startTime[0], automatic.startTime[1], 0, 0);
+  const startTimeUnix = d.getTime();
+
+  d.setHours(automatic.endTime[0], automatic.endTime[1], 0, 0);
+  const endTimeUnix = d.getTime();
+
+  if (startTimeUnix === endTimeUnix) return;
+
+  const now = Date.now();
+
+  if (endTimeUnix > startTimeUnix) {
+    if (now > startTimeUnix && now < endTimeUnix) {
+      const { focusMode } = await browser.storage.local.get("focusMode");
+      browser.storage.local.set({
+        focusMode: {
+          ...focusMode,
+          isEnabled: true,
+        },
+      });
+    } else {
+      const { focusMode } = await browser.storage.local.get("focusMode");
+      browser.storage.local.set({
+        focusMode: {
+          ...focusMode,
+          isEnabled: false,
+        },
+      });
+    }
+  } else {
+    if (now > startTimeUnix || now < endTimeUnix) {
+      const { focusMode } = await browser.storage.local.get("focusMode");
+      browser.storage.local.set({
+        focusMode: {
+          ...focusMode,
+          isEnabled: true,
+        },
+      });
+    } else {
+      const { focusMode } = await browser.storage.local.get("focusMode");
+      browser.storage.local.set({
+        focusMode: {
+          ...focusMode,
+          isEnabled: false,
+        },
+      });
+    }
   }
 });

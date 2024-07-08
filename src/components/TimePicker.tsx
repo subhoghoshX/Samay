@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const browser = chrome;
 
@@ -14,11 +15,46 @@ interface Props {
   isEnabled: boolean;
   startTime: [string | undefined, string | undefined];
   endTime: [string | undefined, string | undefined];
+  days: string[];
 }
 
-export default function TimePicker({ isEnabled, startTime, endTime }: Props) {
+const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const minutes = [0, 10, 15, 20, 30, 40, 45, 50];
+
+export default function TimePicker({
+  isEnabled,
+  startTime,
+  endTime,
+  days,
+}: Props) {
   return (
     <>
+      <ToggleGroup
+        className="py-4"
+        type="multiple"
+        value={days}
+        disabled={!isEnabled}
+        onValueChange={(active: string[]) => {
+          browser.storage.local.set({
+            automatic: {
+              isEnabled,
+              startTime,
+              endTime,
+              days: active,
+            },
+          });
+        }}
+      >
+        {weekDays.map((day) => (
+          <ToggleGroupItem
+            key={day}
+            value={day}
+            className="text-xs w-[calc((238px-24px)/7)] h-[calc((238px-24px)/7)] border"
+          >
+            {day[0]}
+          </ToggleGroupItem>
+        ))}
+      </ToggleGroup>
       <div className="flex gap-2 items-center">
         <span className="font-bold mr-auto">From:</span>
         <Select
@@ -65,9 +101,9 @@ export default function TimePicker({ isEnabled, startTime, endTime }: Props) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {Array.from({ length: 60 }).map((_, i) => (
-                <SelectItem key={i} value={`${i}`}>
-                  {i}
+              {minutes.map((min, i) => (
+                <SelectItem key={i} value={`${min}`}>
+                  {min}
                 </SelectItem>
               ))}
             </SelectGroup>
@@ -120,9 +156,9 @@ export default function TimePicker({ isEnabled, startTime, endTime }: Props) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {Array.from({ length: 60 }).map((_, i) => (
-                <SelectItem key={i} value={`${i}`}>
-                  {i}
+              {minutes.map((min, i) => (
+                <SelectItem key={i} value={`${min}`}>
+                  {min}
                 </SelectItem>
               ))}
             </SelectGroup>

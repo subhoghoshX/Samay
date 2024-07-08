@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Settings, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { useToast } from "@/components/ui/use-toast";
 import TimePicker from "./TimePicker";
 import {
   HoverCard,
@@ -19,8 +20,14 @@ const browser = chrome;
 
 export default function FocusModeCard() {
   const { isEnabled, blockedSites } = useFocusMode();
-  const { isEnabled: isAutomatic, startTime, endTime } = useAutomaticMode();
+  const {
+    isEnabled: isAutomatic,
+    startTime,
+    endTime,
+    days,
+  } = useAutomaticMode();
   const [input, setInput] = useState("");
+  const { toast } = useToast();
 
   function addSiteToBlockList(e: React.FormEvent) {
     e.preventDefault();
@@ -52,6 +59,14 @@ export default function FocusModeCard() {
   }
 
   function toggleFocusMode(isChecked: boolean) {
+    if (isAutomatic) {
+      toast({
+        title: "Automatic mode is active.",
+        description:
+          "Focus mode will automatically enable/disable in less than 5 minutes based on your settings.",
+      });
+    }
+
     browser.storage.local.set({
       focusMode: {
         isEnabled: isChecked,
@@ -95,6 +110,7 @@ export default function FocusModeCard() {
                           isEnabled: bool,
                           startTime,
                           endTime,
+                          days,
                         },
                       });
                     }}
@@ -106,6 +122,7 @@ export default function FocusModeCard() {
                   isEnabled={isAutomatic}
                   startTime={startTime}
                   endTime={endTime}
+                  days={days}
                 />
               </CardContent>
             </PopoverContent>
