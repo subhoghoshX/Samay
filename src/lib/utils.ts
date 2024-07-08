@@ -113,11 +113,13 @@ export function useAutomaticMode() {
     isEnabled: boolean;
     startTime: [string | undefined, string | undefined];
     endTime: [string | undefined, string | undefined];
+    days: string[];
   }
   const [automaticMode, setAutomaticMode] = useState<State>({
     isEnabled: false,
     startTime: [undefined, undefined],
     endTime: [undefined, undefined],
+    days: [],
   });
 
   useEffect(() => {
@@ -126,11 +128,12 @@ export function useAutomaticMode() {
     async function getAutomaticDetails() {
       const { automatic } = await browser.storage.local.get("automatic");
 
-      const { isEnabled, startTime, endTime } = automatic;
+      const { isEnabled, startTime, endTime, days } = automatic;
       setAutomaticMode({
         isEnabled,
         startTime: [startTime[0] ?? undefined, startTime[1] ?? undefined],
         endTime: [endTime[0] ?? undefined, endTime[1] ?? undefined],
+        days: days ?? [],
       });
     }
     getAutomaticDetails();
@@ -138,11 +141,13 @@ export function useAutomaticMode() {
     browser.storage.onChanged.addListener(onChangeHandler);
     function onChangeHandler(changes) {
       if (changes.automatic) {
-        const { isEnabled, startTime, endTime } = changes.automatic.newValue;
+        const { isEnabled, startTime, endTime, days } =
+          changes.automatic.newValue;
         setAutomaticMode({
           isEnabled,
           startTime: [startTime[0] ?? undefined, startTime[1] ?? undefined],
           endTime: [endTime[0] ?? undefined, endTime[1] ?? undefined],
+          days,
         });
       }
     }

@@ -11,6 +11,7 @@ import {
 } from "@/lib/utils";
 import FocusMode from "@/components/FocusMode";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function App() {
   const isDark = useSystemDarkStatus();
@@ -103,6 +104,7 @@ export default function App() {
           <FocusMode />
         </div>
       </section>
+      <Toaster />
     </main>
   );
 }
