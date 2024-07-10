@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Settings, X } from "lucide-react";
+import { Bot, X } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { useToast } from "@/components/ui/use-toast";
 import TimePicker from "./TimePicker";
@@ -94,7 +94,7 @@ export default function FocusModeCard() {
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" size="icon" className="size-7">
-                <Settings className="size-4" />
+                <Bot className="size-4" />
               </Button>
             </PopoverTrigger>
             <PopoverContent>
