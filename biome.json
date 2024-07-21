@@ -9,5 +9,10 @@
   },
   "linter": {
     "enabled": false
+  },
+  "css": {
+    "formatter": {
+      "enabled": true
+    }
   }
 }
