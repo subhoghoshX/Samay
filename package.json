@@ -3,7 +3,10 @@
   "scripts": {
     "build": "./build.js",
     "watch": "./build.js -w",
-    "format:fix": "biome format --write ."
+    "lint:check": "eslint src",
+    "format:check": "biome format .",
+    "format:fix": "biome format --write .",
+    "test": "echo \"For now, we don't have any tests.\""
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
