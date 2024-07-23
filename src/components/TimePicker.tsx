@@ -19,6 +19,7 @@ interface Props {
 }
 
 const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const hours = Array.from({ length: 24 }).map((_, i) => i);
 const minutes = [0, 10, 15, 20, 30, 40, 45, 50];
 
 export default function TimePicker({
@@ -75,9 +76,9 @@ export default function TimePicker({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {Array.from({ length: 24 }).map((_, i) => (
-                <SelectItem key={i} value={`${i}`}>
-                  {i}
+              {hours.map((hour) => (
+                <SelectItem key={hour} value={`${hour}`}>
+                  {hour}
                 </SelectItem>
               ))}
             </SelectGroup>
@@ -101,8 +102,8 @@ export default function TimePicker({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {minutes.map((min, i) => (
-                <SelectItem key={i} value={`${min}`}>
+              {minutes.map((min) => (
+                <SelectItem key={min} value={`${min}`}>
                   {min}
                 </SelectItem>
               ))}
@@ -130,9 +131,9 @@ export default function TimePicker({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {Array.from({ length: 24 }).map((_, i) => (
-                <SelectItem key={i} value={`${i}`}>
-                  {i}
+              {hours.map((hour) => (
+                <SelectItem key={hour} value={`${hour}`}>
+                  {hour}
                 </SelectItem>
               ))}
             </SelectGroup>
@@ -156,8 +157,8 @@ export default function TimePicker({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {minutes.map((min, i) => (
-                <SelectItem key={i} value={`${min}`}>
+              {minutes.map((min) => (
+                <SelectItem key={min} value={`${min}`}>
                   {min}
                 </SelectItem>
               ))}

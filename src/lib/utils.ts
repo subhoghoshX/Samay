@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getDate(d?: Date) {
-  d = d ?? new Date();
+export function getDate(_d?: Date) {
+  const d = _d ?? new Date();
   const dd = String(d.getDate()).padStart(2, "0");
   const mm = String(d.getMonth() + 1).padStart(2, "0"); //January is 0!
   const yyyy = d.getFullYear();

@@ -3,7 +3,7 @@
   "scripts": {
     "build": "./build.js",
     "watch": "./build.js -w",
-    "lint:check": "eslint src",
+    "lint:check": "biome lint .",
     "format:check": "biome format .",
     "format:fix": "biome format --write .",
     "test": "echo \"For now, we don't have any tests.\""

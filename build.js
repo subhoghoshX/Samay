@@ -80,11 +80,13 @@ function watch_dirs(dir, on_change) {
 
   // watch all subdirectories in dir
   const d = fs.opendirSync(dir);
-  let dirent;
+  let dirent = d.readSync();
 
-  while ((dirent = d.readSync()) !== null) {
+  while (dirent !== null) {
     if (dirent.isDirectory())
       watch_dirs(path.join(dir, dirent.name), on_change);
+
+    dirent = d.readSync();
   }
   d.closeSync();
 }
