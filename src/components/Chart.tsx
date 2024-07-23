@@ -9,7 +9,13 @@ import {
   YAxis,
 } from "recharts";
 
-export default function Chart({ data }) {
+import type { ChartData } from "@/components/Overview";
+
+interface Props {
+  data: ChartData[] | undefined;
+}
+
+export default function Chart({ data }: Props) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={data}>

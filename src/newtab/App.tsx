@@ -35,7 +35,7 @@ export default function App() {
     return totalTime;
   }, [todayUsage]);
 
-  const [selectedHost, setSelectedHost] = useState(null);
+  const [selectedHost, setSelectedHost] = useState<string | null>(null);
 
   useEffect(() => {
     // set selectedHost: by default it's the most used website

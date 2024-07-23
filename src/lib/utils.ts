@@ -15,7 +15,7 @@ export function getDate(_d?: Date) {
   return `${yyyy}-${mm}-${dd}`;
 }
 
-export function millisecToHMS(millisec) {
+export function millisecToHMS(millisec: number) {
   const d = new Date(millisec);
   return d
     .toISOString()
@@ -46,7 +46,9 @@ export function useSystemDarkStatus() {
 }
 
 export function useTotalUsage() {
-  const [totalUsage, setTotalUsage] = useState({});
+  const [totalUsage, setTotalUsage] = useState<
+    Record<string, Record<string, number>>
+  >({});
 
   useEffect(() => {
     const browser = chrome;
@@ -81,7 +83,7 @@ export function useTotalUsage() {
 export function useFocusMode() {
   const [focusMode, setFocusMode] = useState({
     isEnabled: false,
-    blockedSites: [],
+    blockedSites: [] as string[],
   });
 
   useEffect(() => {
@@ -94,7 +96,9 @@ export function useFocusMode() {
     getFocusMode();
 
     browser.storage.onChanged.addListener(onChangeHandler);
-    function onChangeHandler(changes) {
+    function onChangeHandler(changes: {
+      [key: string]: chrome.storage.StorageChange;
+    }) {
       if (changes.focusMode) {
         setFocusMode(changes.focusMode.newValue);
       }
@@ -139,7 +143,9 @@ export function useAutomaticMode() {
     getAutomaticDetails();
 
     browser.storage.onChanged.addListener(onChangeHandler);
-    function onChangeHandler(changes) {
+    function onChangeHandler(changes: {
+      [key: string]: chrome.storage.StorageChange;
+    }) {
       if (changes.automatic) {
         const { isEnabled, startTime, endTime, days } =
           changes.automatic.newValue;

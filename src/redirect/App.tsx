@@ -30,7 +30,8 @@ export default function App() {
     };
   }, []);
 
-  const redirectedFrom = new URL(window.location.href).searchParams.get("from");
+  const redirectedFrom =
+    new URL(window.location.href).searchParams.get("from") ?? "";
 
   return (
     <main className="flex justify-center items-center min-h-screen">
