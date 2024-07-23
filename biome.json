@@ -8,11 +8,19 @@
     "indentStyle": "space"
   },
   "linter": {
-    "enabled": false
+    "enabled": true,
+    "rules": {
+      "style": {
+        "useTemplate": "off"
+      }
+    }
   },
   "css": {
     "formatter": {
       "enabled": true
     }
+  },
+  "javascript": {
+    "jsxRuntime": "reactClassic"
   }
 }
