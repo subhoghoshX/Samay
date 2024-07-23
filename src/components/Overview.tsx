@@ -11,17 +11,20 @@ import { getDate } from "@/lib/utils";
 
 interface Props {
   totalUsage: Record<string, Record<string, number>>;
-  selectedHost: string;
+  selectedHost: string | null;
+}
+
+export interface ChartData {
+  name: string;
+  total: number;
 }
 
 export default function Overview({ totalUsage, selectedHost }: Props) {
   const chartData = useMemo(() => {
-    if (!selectedHost) {
-      return null;
-    }
+    if (!selectedHost) return;
 
     const days = ["Sun", "Mon", "Tue", "Wed", "Thi", "Fri", "Sat"];
-    const data = [];
+    const data: ChartData[] = [];
     for (let i = 0; i < 7; i++) {
       const d = new Date();
       d.setDate(d.getDate() - i);
