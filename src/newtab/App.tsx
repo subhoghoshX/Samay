@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import Overview from "@/components/Overview";
+import UsageOverTime from "@/components/UsageOverTime";
 import {
   getDate,
   millisecToHMS,
@@ -107,7 +107,7 @@ export default function App() {
           </CardContent>
         </Card>
         <div className="flex flex-col gap-5">
-          <Overview totalUsage={totalUsage} selectedHost={selectedHost} />
+          <UsageOverTime totalUsage={totalUsage} selectedHost={selectedHost} />
           <FocusMode />
         </div>
       </section>

@@ -19,7 +19,7 @@ export interface ChartData {
   total: number;
 }
 
-export default function Overview({ totalUsage, selectedHost }: Props) {
+export default function UsageOverTime({ totalUsage, selectedHost }: Props) {
   const chartData = useMemo(() => {
     if (!selectedHost) return;
 
