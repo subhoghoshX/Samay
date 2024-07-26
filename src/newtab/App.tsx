@@ -11,6 +11,7 @@ import {
 import FocusMode from "@/components/FocusMode";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Toaster } from "@/components/ui/toaster";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function App() {
   const isDark = useSystemDarkStatus();
@@ -77,11 +78,13 @@ export default function App() {
                           className="flex items-center gap-x-8 px-2 py-1 -mx-2 hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded"
                         >
                           <div className="w-44 flex items-center gap-3">
-                            <img
-                              className="size-3.5 rounded"
-                              src={"https://favicone.com/" + hostName}
-                              alt=""
-                            />
+                            <Avatar className="size-3.5">
+                              <AvatarImage
+                                src={"https://favicone.com/" + hostName}
+                                alt={hostName + " favicon"}
+                              />
+                              <AvatarFallback>{hostName[0]}</AvatarFallback>
+                            </Avatar>
                             {hostName}
                           </div>
                           <span className="w-20 text-right tabular-nums">
