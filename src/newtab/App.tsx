@@ -78,7 +78,7 @@ export default function App() {
                           className="flex items-center gap-x-8 px-2 py-1 -mx-2 hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded"
                         >
                           <div className="w-44 flex items-center gap-3">
-                            <Avatar className="size-3.5">
+                            <Avatar className="size-3.5" id="favicon">
                               <AvatarImage
                                 src={"https://favicone.com/" + hostName}
                                 alt={hostName + " favicon"}
