@@ -85,7 +85,9 @@ export default function App() {
                               />
                               <AvatarFallback>{hostName[0]}</AvatarFallback>
                             </Avatar>
-                            {hostName}
+                            <span className="line-clamp-1 text-left">
+                              {hostName}
+                            </span>
                           </div>
                           <span className="w-20 text-right tabular-nums">
                             {hour ? hour + "h" : ""}{" "}
