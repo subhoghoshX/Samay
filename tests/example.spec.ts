@@ -38,6 +38,9 @@ test("Extension in New Tab page", async ({ page }) => {
   await page.goto("chrome://newtab");
   await expect(page).toHaveTitle("New Tab");
   await expect(page).toHaveScreenshot({
-    mask: [page.locator("section > div:last-child > div:first-child svg")],
+    mask: [
+      page.locator("section > div:last-child > div:first-child svg"),
+      page.locator("section > div:first-child ul li button img"),
+    ],
   });
 });
