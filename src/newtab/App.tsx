@@ -50,7 +50,7 @@ export default function App() {
   }, [todayUsage]);
 
   return (
-    <main className="flex justify-center lg:items-center h-screen overflow-auto py-10 dark:bg-zinc-950">
+    <main className="flex justify-center lg:items-center h-screen overflow-auto py-10 dark:bg-zinc-950 font-sans">
       <section className="flex gap-5 flex-col lg:flex-row h-fit">
         <Card>
           <CardHeader>

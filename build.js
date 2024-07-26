@@ -22,7 +22,7 @@ const context = await esbuild.context({
   ],
   outdir: "dist",
   target: ["es2020"],
-  loader: { ".js": "jsx" },
+  loader: { ".js": "jsx", ".ttf": "file" },
   plugins: [
     {
       name: "clean-dist",
