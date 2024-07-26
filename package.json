@@ -6,10 +6,11 @@
     "lint:check": "biome lint .",
     "format:check": "biome format .",
     "format:fix": "biome format --write .",
-    "test": "echo \"For now, we don't have any tests.\""
+    "test": "PW_TEST_HTML_REPORT_OPEN='never' npx playwright test"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
+    "@playwright/test": "^1.45.3",
     "@types/chrome": "^0.0.269",
     "@types/node": "^20.14.12",
     "@types/react": "^18.3.3",
