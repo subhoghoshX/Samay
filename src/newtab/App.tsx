@@ -12,6 +12,7 @@ import FocusMode from "@/components/FocusMode";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Toaster } from "@/components/ui/toaster";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Overview } from "@/components/Overview";
 
 export default function App() {
   const isDark = useSystemDarkStatus();
@@ -107,7 +108,7 @@ export default function App() {
           </CardContent>
         </Card>
         <div className="flex flex-col gap-5">
-          <UsageOverTime totalUsage={totalUsage} selectedHost={selectedHost} />
+          <Overview totalUsage={totalUsage} />
           <FocusMode />
         </div>
       </section>
