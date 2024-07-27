@@ -9,7 +9,7 @@ import {
   YAxis,
 } from "recharts";
 
-import type { ChartData } from "@/components/Overview";
+import type { ChartData } from "@/components/UsageOverTime";
 
 interface Props {
   data: ChartData[] | undefined;

@@ -3,7 +3,7 @@
   "scripts": {
     "build": "./build.js",
     "watch": "./build.js -w",
-    "lint:check": "biome lint .",
+    "lint:check": "biome lint . && tsc --noEmit",
     "format:check": "biome format .",
     "format:fix": "biome format --write .",
     "test": "PW_TEST_HTML_REPORT_OPEN='never' npx playwright test"
