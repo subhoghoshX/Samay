@@ -13,6 +13,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Toaster } from "@/components/ui/toaster";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Overview } from "@/components/Overview";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 
 export default function App() {
   const isDark = useSystemDarkStatus();
@@ -51,6 +58,8 @@ export default function App() {
     setSelectedHost(mostUsedSite);
   }, [todayUsage]);
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <main className="flex justify-center lg:items-center h-screen overflow-auto py-10 dark:bg-zinc-950 font-sans">
       <section className="flex gap-5 flex-col lg:flex-row h-fit">
@@ -75,7 +84,10 @@ export default function App() {
                       <li key={hostName}>
                         <button
                           type="button"
-                          onClick={() => setSelectedHost(hostName)}
+                          onClick={() => {
+                            setSelectedHost(hostName);
+                            setIsDrawerOpen(true);
+                          }}
                           className="flex items-center gap-x-8 px-2 py-1 -mx-2 hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded"
                         >
                           <div className="w-44 flex items-center gap-3">
@@ -113,6 +125,22 @@ export default function App() {
         </div>
       </section>
       <Toaster />
+      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerContent>
+          <div className="mx-auto">
+            <DrawerHeader>
+              <DrawerTitle>Last 30 days</DrawerTitle>
+              <DrawerDescription>{selectedHost}</DrawerDescription>
+            </DrawerHeader>
+            <div className="h-80 w-[500px]">
+              <UsageOverTime
+                totalUsage={totalUsage}
+                selectedHost={selectedHost}
+              />
+            </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
     </main>
   );
 }
