@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 
-import { cn } from "@/lib/utils";
+import { cn, millisecToHMS } from "@/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
@@ -185,6 +185,11 @@ const ChartTooltipContent = React.forwardRef<
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
             const indicatorColor = color || item.payload.fill || item.color;
 
+            let timeSpent: number = Number(item.value);
+            if (Number.isNaN(timeSpent)) {
+              timeSpent = 0;
+            }
+            const [hour, minute, second] = millisecToHMS(timeSpent);
             return (
               <div
                 key={item.dataKey}
@@ -235,7 +240,8 @@ const ChartTooltipContent = React.forwardRef<
                       </div>
                       {item.value && (
                         <span className="font-mono font-medium tabular-nums text-foreground">
-                          {item.value.toLocaleString()}
+                          {hour ? hour + "h" : ""} {minute ? minute + "m" : ""}{" "}
+                          {second ? second + "s" : ""}
                         </span>
                       )}
                     </div>
