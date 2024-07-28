@@ -6,6 +6,8 @@ Track your browsing time with this extension and block sites to stay focused whe
 
 ## Installation
 
+Download the extension [zip file]() and extract it.
+
 Clone the repo
 
 ```
