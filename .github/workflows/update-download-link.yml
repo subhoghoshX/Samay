@@ -13,12 +13,10 @@ jobs:
         version=$(git describe --tags --abbrev=0)
         new_link="https://github.com/subhoghoshX/Samay/releases/download/$version/samay-$version.zip"
         sed -i "s/\[zip file\](.*)/\[zip file\]\($new_link\)/g" README.md
-    - name: Sent PR
-      run:
-        git add .
-      run:
-        git commit -m "Update download link"
-      run:
-        gh pr create -B "update-link-for-$version" -H main --title 'Update download link' --body 'Created by Github action'
+
+    # Sent PR
+    - run: git add .
+    - run: git commit -m "Update download link"
+    - run: gh pr create -B "update-link-for-$version" -H main --title 'Update download link' --body 'Created by Github action'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
