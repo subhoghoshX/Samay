@@ -1,5 +1,7 @@
 name: Update Download Link
-on: [release]
+on:
+  release:
+    types: [published]
 jobs:
   update-downlad-link:
     runs-on: ubuntu-latest
@@ -14,7 +16,9 @@ jobs:
     - name: Sent PR
       run:
         git add .
+      run:
         git commit -m "Update download link"
+      run:
         gh pr create -B "update-link-for-$version" -H main --title 'Update download link' --body 'Created by Github action'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
