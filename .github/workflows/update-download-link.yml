@@ -1,0 +1,20 @@
+name: Update Download Link
+on: [release]
+jobs:
+  update-downlad-link:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Update
+      run:
+        version=$(git describe --tags --abbrev=0)
+        new_link="https://github.com/subhoghoshX/Samay/releases/download/$version/samay-$version.zip"
+        sed -i "s/\[zip file\](.*)/\[zip file\]\($new_link\)/g" README.md
+    - name: Sent PR
+      run:
+        git add .
+        git commit -m "Update download link"
+        gh pr create -B "update-link-for-$version" -H main --title 'Update download link' --body 'Created by Github action'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
