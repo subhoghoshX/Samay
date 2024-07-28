@@ -2,7 +2,7 @@
 
 Track your browsing time with this extension and block sites to stay focused when needed.
 
-![image](https://github.com/subhoghoshX/Samay/assets/108616679/d1d4ae1e-c937-4022-87ff-72a0b6a365fc)
+![image](https://github.com/user-attachments/assets/6b7ce034-1b8c-4dfc-8a50-82585dfcb95b)
 
 ## Installation
 
