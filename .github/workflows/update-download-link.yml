@@ -21,6 +21,7 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git checkout -b "update-link-for-$version"
         git add .
         git commit -m "Update download link"
         gh pr create -B "update-link-for-$version" -H main --title 'Update download link' --body 'Created by Github action'
