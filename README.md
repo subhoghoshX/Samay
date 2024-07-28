@@ -6,7 +6,7 @@ Track your browsing time with this extension and block sites to stay focused whe
 
 ## Installation
 
-Download the extension [zip file]() and extract it.
+Download the extension [zip file](https://github.com/subhoghoshX/Samay/releases/download/v0.0.1/samay-v0.0.1.zip) and extract it.
 
 Clone the repo
 
