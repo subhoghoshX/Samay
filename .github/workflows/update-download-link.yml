@@ -9,14 +9,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Update
-      run:
+      run: |
         version=$(git describe --tags --abbrev=0)
         new_link="https://github.com/subhoghoshX/Samay/releases/download/$version/samay-$version.zip"
-        sed -i "s/\[zip file\](.*)/\[zip file\]\($new_link\)/g" README.md
+        sed -i "s#\[zip file\](.*)#\[zip file\]\($new_link\)#g" README.md
 
-    # Sent PR
-    - run: git add .
-    - run: git commit -m "Update download link"
-    - run: gh pr create -B "update-link-for-$version" -H main --title 'Update download link' --body 'Created by Github action'
+    - name: Send PR
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Update download link"
+        gh pr create -B "update-link-for-$version" -H main --title 'Update download link' --body 'Created by Github action'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
