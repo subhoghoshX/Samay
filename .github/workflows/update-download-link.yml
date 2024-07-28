@@ -23,6 +23,6 @@ jobs:
         git add .
         git commit -m "Update download link"
         git push origin "update-link-for-$version"
-        gh pr create -B "update-link-for-$version" -H main --title 'Update download link' --body 'Created by Github action'
+        gh pr create -H "update-link-for-$version" -B main --title 'Update download link' --body 'Created by Github action'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
