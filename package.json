@@ -4,7 +4,8 @@
     "build": "./build.js",
     "watch": "./build.js -w",
     "format": "biome format .",
-    "lint": "biome lint . && tsc --noEmit",
+    "lint": "biome lint .",
+    "typecheck": "tsc --noEmit",
     "test": "PW_TEST_HTML_REPORT_OPEN='never' npx playwright test",
     "format:fix": "biome format --write ."
   },
