@@ -40,7 +40,7 @@ test("Extension in New Tab page", async ({ page }) => {
   await expect(page).toHaveScreenshot({
     mask: [
       page.locator("section > div:last-child > div:first-child svg"),
-      page.locator("#overview-date"),
+      page.locator("#overview-header"),
       page.locator("#favicon"),
     ],
   });
