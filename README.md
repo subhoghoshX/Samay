@@ -6,7 +6,15 @@ Track your browsing time with this extension and block sites to stay focused whe
 
 ## Installation
 
+After following any of the following steps, visit the extension management page
+in Chrome (or chromium based browsers), enable "Developer mode" at the top-right
+corner and drag & drop the folder.
+
+### Download zip
+
 Download the extension [zip file](https://github.com/subhoghoshX/Samay/releases/download/v0.0.1/samay-v0.0.1.zip) and extract it.
+
+### Build from source
 
 Clone the repo
 
@@ -25,5 +33,3 @@ Build it
 ```
 npm run build
 ```
-
-Visit the extension management page in Chrome (or chromium based browsers), enable "Developer mode" at the top-right corner and drag & drop the dist folder.
