@@ -49,9 +49,9 @@ export function Overview({ totalUsage }: Props) {
 
   return (
     <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
+      <CardHeader className="items-center pb-0" id="overview-header">
         <CardTitle className="text-lg">Top 5 sites</CardTitle>
-        <CardDescription id="overview-date">{formattedDate}</CardDescription>
+        <CardDescription>{formattedDate}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
