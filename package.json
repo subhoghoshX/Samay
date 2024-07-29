@@ -3,10 +3,10 @@
   "scripts": {
     "build": "./build.js",
     "watch": "./build.js -w",
-    "lint:check": "biome lint . && tsc --noEmit",
-    "format:check": "biome format .",
-    "format:fix": "biome format --write .",
-    "test": "PW_TEST_HTML_REPORT_OPEN='never' npx playwright test"
+    "format": "biome format .",
+    "lint": "biome lint . && tsc --noEmit",
+    "test": "PW_TEST_HTML_REPORT_OPEN='never' npx playwright test",
+    "format:fix": "biome format --write ."
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
