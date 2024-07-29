@@ -1,9 +1,9 @@
-name: Format Lint Test
+name: CI
 
 on: [pull_request]
 
 jobs:
-  format:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,18 +14,10 @@ jobs:
         run: npm ci
       - name: Check formatting
         run: npm run format
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        run: npm ci
-      - name: Lint code
+      - name: Check linting
         run: npm run lint
+      - name: Check types
+        run: npm run typecheck
 
   test:
     timeout-minutes: 10
