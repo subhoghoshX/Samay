@@ -2,7 +2,10 @@ const { fontFamily } = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,ts,tsx}"],
+  content: [
+    "./entrypoints/**/*.{html,ts,tsx}",
+    "./components/**/*.{html,ts,tsx}",
+  ],
   darkMode: ["class"],
   theme: {
     container: {
