@@ -45,3 +45,32 @@ test("Extension in New Tab page", async ({ page }) => {
     ],
   });
 });
+
+test("Focus mode", async ({ page }) => {
+  await page.goto("chrome://newtab");
+  const fm = page.locator("#focusmode");
+  await expect(fm).toHaveScreenshot("focusmode.png");
+
+  await fm.locator("input").fill("www.youtube.com");
+  await page.keyboard.press("Enter");
+  await expect(fm).toHaveScreenshot("focusmode-blocklist-input-focused.png");
+
+  await fm.locator("li button").click();
+  await expect(fm).toHaveScreenshot("focusmode.png");
+
+  await fm.locator("input").fill("www.youtube.com");
+  await fm.getByText("Add").click();
+  await expect(fm).toHaveScreenshot("focusmode-blocklist-input-blurred.png");
+
+  await fm.getByRole("switch").click();
+  await page.goto("https://www.youtube.com");
+  await expect(page).toHaveScreenshot("redirect-page.png");
+});
+
+test("Drawer", async ({ page }) => {
+  await page.goto("https://example.com/");
+  await page.waitForTimeout(1000);
+  await page.goto("chrome://newtab");
+  page.getByRole("list").getByText("example.com").click();
+  await expect(page).toHaveScreenshot("drawer.png");
+});
