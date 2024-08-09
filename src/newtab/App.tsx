@@ -61,7 +61,7 @@ export default function App() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
-    <main className="flex justify-center lg:items-center h-screen overflow-auto py-10 dark:bg-zinc-950 font-sans">
+    <main className="flex justify-center lg:items-center h-screen overflow-auto py-10 dark:bg-zinc-950">
       <section className="flex gap-5 flex-col lg:flex-row h-fit">
         <Card>
           <CardHeader>

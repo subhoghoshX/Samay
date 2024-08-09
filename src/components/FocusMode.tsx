@@ -75,7 +75,7 @@ export default function FocusModeCard() {
   }
 
   return (
-    <Card className="lg:w-96 flex flex-col lg:h-1/2 h-80">
+    <Card className="lg:w-96 flex flex-col lg:h-1/2 h-80" id="focusmode">
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-3">
           <HoverCard>
