@@ -30,7 +30,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build extension
-        run: npm run build
+        run: |
+          npm run zip
+          version=$(node -p "require('./package.json').version")
+          unzip ".output/samay-${version}-chrome.zip" -d ".output/samay-${version}-chrome"
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
       - name: Run tests

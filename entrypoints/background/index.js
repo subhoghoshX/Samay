@@ -107,7 +107,7 @@ export default defineBackground(() => {
 
     if (isBlocked) {
       browser.tabs.update(details.tabId, {
-        url: `redirect/index.html?from=${tabUrl}`,
+        url: `redirect.html?from=${tabUrl}`,
       });
     }
   });
