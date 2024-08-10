@@ -9,8 +9,6 @@ import {
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-const browser = chrome;
-
 interface Props {
   isEnabled: boolean;
   startTime: [string | undefined, string | undefined];
