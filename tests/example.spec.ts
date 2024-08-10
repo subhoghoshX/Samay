@@ -1,14 +1,19 @@
 import { test as base, type BrowserContext } from "@playwright/test";
 import { chromium } from "playwright";
 import path from "node:path";
+import fs from "node:fs";
 
 // @ts-ignore: stop typescript from bitching about import.meta
 const __dirname = path.dirname(import.meta.filename);
 
+const data = fs.readFileSync(path.join(__dirname, "../package.json"), "utf8");
+const packageJson = JSON.parse(data);
+const outDir = `../.output/samay-${packageJson.version}-chrome`;
+
 const test = base.extend<{ context: BrowserContext; extensionId: string }>({
   // biome-ignore lint: not use what this object destructuring is for
   context: async ({}, use) => {
-    const pathToExtension = path.join(__dirname, "../dist");
+    const pathToExtension = path.join(__dirname, outDir);
     const context = await chromium.launchPersistentContext("", {
       headless: false,
       args: [
@@ -72,5 +77,7 @@ test("Drawer", async ({ page }) => {
   await page.waitForTimeout(1000);
   await page.goto("chrome://newtab");
   page.getByRole("list").getByText("example.com").click();
-  await expect(page).toHaveScreenshot("drawer.png");
+  await expect(page).toHaveScreenshot("drawer.png", {
+    mask: [page.locator("div[role='dialog'] svg > g:nth-child(5)")],
+  });
 });
