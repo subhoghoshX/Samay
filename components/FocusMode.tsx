@@ -15,8 +15,6 @@ import {
 } from "@/components/ui/hover-card";
 import { useAutomaticMode, useFocusMode } from "@/lib/utils";
 
-const browser = chrome;
-
 export default function FocusModeCard() {
   const { isEnabled, blockedSites } = useFocusMode();
   const {

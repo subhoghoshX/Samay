@@ -1,8 +1,6 @@
 import { getDate } from "@/lib/utils";
 
 export default defineBackground(() => {
-  const browser = chrome;
-
   browser.runtime.onInstalled.addListener(fillLocalStorage);
 
   async function fillLocalStorage() {
@@ -46,7 +44,7 @@ export default defineBackground(() => {
       // focused on a devtools window
       if (details < 0) return;
 
-      const tabs = await chrome.tabs.query({
+      const tabs = await browser.tabs.query({
         currentWindow: true,
         active: true,
       });

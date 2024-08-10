@@ -51,8 +51,6 @@ export function useTotalUsage() {
   >({});
 
   useEffect(() => {
-    const browser = chrome;
-
     async function getTotalUsage() {
       const { totalUsage } = await browser.storage.local.get("totalUsage");
 
@@ -87,8 +85,6 @@ export function useFocusMode() {
   });
 
   useEffect(() => {
-    const browser = chrome;
-
     async function getFocusMode() {
       const { focusMode } = await browser.storage.local.get("focusMode");
       setFocusMode(focusMode);
@@ -127,8 +123,6 @@ export function useAutomaticMode() {
   });
 
   useEffect(() => {
-    const browser = chrome;
-
     async function getAutomaticDetails() {
       const { automatic } = await browser.storage.local.get("automatic");
 
