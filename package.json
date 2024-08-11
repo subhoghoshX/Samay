@@ -10,6 +10,7 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip --browser firefox",
     "postinstall": "wxt prepare",
+    "release": "./release.sh",
     "format": "biome format .",
     "lint": "biome lint .",
     "typecheck": "tsc --noEmit",
