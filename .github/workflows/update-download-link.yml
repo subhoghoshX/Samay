@@ -14,7 +14,7 @@ jobs:
     - name: Update
       run: |
         version=$(git describe --tags --abbrev=0)
-        new_link="https://github.com/subhoghoshX/Samay/releases/download/$version/samay-$version.zip"
+        new_link="https://github.com/subhoghoshX/Samay/releases/download/$version/samay-$version-chrome.zip"
         sed -i "s#\[zip file\](.*)#\[zip file\]\($new_link\)#g" README.md
         # Send PR
         git config --global user.name "github-actions[bot]"
