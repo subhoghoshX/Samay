@@ -12,7 +12,7 @@ corner and drag & drop the folder.
 
 ### Download zip
 
-Download the extension [zip file](https://github.com/subhoghoshX/Samay/releases/download/v0.0.2/samay-v0.0.2-chrome.zip) and extract it.
+Download the extension [zip file](https://github.com/subhoghoshX/Samay/releases/download/v0.0.2/samay-0.0.2-chrome.zip) and extract it.
 
 ### Build from source
 
