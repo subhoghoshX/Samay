@@ -59,4 +59,17 @@ jobs:
           name: playwright-report
           path: playwright-report
       - name: Deploy to Netlify
-        run: npx netlify-cli deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --dir playwright-report
+        run: npx netlify-cli deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --dir playwright-report --json | jq -r '.deploy_url' > deploy-url.txt
+      # This requires "Settings > Actions > General > Workflow permissions > Read and write permissions" to be selected
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const deployUrl = fs.readFileSync('deploy-url.txt', 'utf-8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Test failed: ${deployUrl}`
+            });
