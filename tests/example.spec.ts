@@ -78,6 +78,6 @@ test("Drawer", async ({ page }) => {
   await page.goto("chrome://newtab");
   page.getByRole("list").getByText("example.com").click();
   await expect(page).toHaveScreenshot("drawer.png", {
-    mask: [page.locator("div[role='dialog'] svg > g:nth-child(5)")],
+    mask: [page.locator("div[role='dialog'] svg")],
   });
 });
