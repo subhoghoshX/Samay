@@ -21,7 +21,7 @@
     "@biomejs/biome": "1.8.3",
     "@playwright/test": "^1.46.1",
     "@types/chrome": "^0.0.270",
-    "@types/node": "^22.5.0",
+    "@types/node": "^22.5.1",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "argparse": "^2.0.1",
