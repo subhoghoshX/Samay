@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.0",
-    "@playwright/test": "^1.47.0",
+    "@playwright/test": "^1.47.1",
     "@types/chrome": "^0.0.270",
     "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
