@@ -27,7 +27,7 @@
     "argparse": "^2.0.1",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
-    "wxt": "^0.19.9"
+    "wxt": "^0.19.11"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.0",
