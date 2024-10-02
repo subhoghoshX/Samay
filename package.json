@@ -20,7 +20,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.2",
     "@playwright/test": "^1.47.2",
-    "@types/chrome": "^0.0.271",
+    "@types/chrome": "^0.0.275",
     "@types/node": "^22.5.5",
     "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
